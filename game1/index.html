@@ -5,8 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>guagame</title>
+
+    <style>
+        canvas {
+            border:1px solid #000;
+        }
+    </style>
 </head>
 <body>
-    <canvas \></canvas>
+    <canvas id="id-canvas" width="400" height="400"></canvas>
+
+    
+    <script>
+        var log = console.log.bind(console)
+
+        var canvas = document.querySelector('#id-canvas')
+        var context = canvas.getContext('2d')
+
+        var x = 150
+        var y = 200
+
+        var img = new Image();
+        img.src = 'images/paddle.png';
+        img.onload = function() {
+            context.drawImage(img,x,y);
+        }
+
+        //events
+        window.addEventListener('keydown', function(event) {
+            var k = event.key
+            log(event)
+            if (k == 'a') {
+                x -= 10
+                context.clearRect(0,0,canvas.width,canvas.height)
+                context.drawImage(img,x,y);                
+            } else if (k == 'd') {
+                x += 10
+                context.clearRect(0,0,canvas.width,canvas.height)
+                context.drawImage(img,x,y);  
+            }
+        })
+
+        //18:44
+    </script>
 </body>
 </html>
