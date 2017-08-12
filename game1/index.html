@@ -13,40 +13,121 @@
     </style>
 </head>
 <body>
-    <canvas id="id-canvas" width="400" height="400"></canvas>
+    <canvas id="id-canvas" width="400" height="300"></canvas>
 
     
     <script>
         var log = console.log.bind(console)
-
-        var canvas = document.querySelector('#id-canvas')
-        var context = canvas.getContext('2d')
-
-        var x = 150
-        var y = 200
-
-        var img = new Image();
-        img.src = 'images/paddle.png';
-        img.onload = function() {
-            context.drawImage(img,x,y);
+        
+        var imageFromPath = function(path) {
+            var img = new Image()
+            img.src = path
+            return img
         }
 
-        //events
-        window.addEventListener('keydown', function(event) {
-            var k = event.key
-            log(event)
-            if (k == 'a') {
-                x -= 10
-                context.clearRect(0,0,canvas.width,canvas.height)
-                context.drawImage(img,x,y);                
-            } else if (k == 'd') {
-                x += 10
-                context.clearRect(0,0,canvas.width,canvas.height)
-                context.drawImage(img,x,y);  
+        var Paddle = function() {
+            var image = imageFromPath('images/paddle.png')
+            var o = {
+                image: image,
+                x: 100,
+                y: 200,
+                speed: 5,
             }
-        })
+            var paddle = o
+            o.moveLeft = function() {
+                paddle.x -= paddle.speed
+            }
+            o.moveRight = function() {
+                paddle.x += paddle.speed
+            }
+            return o
+        }
 
-        //18:44
+        var GuaGame = function() {
+            var g = {
+                actions: {},
+                keydowns: {},
+            }
+            var canvas = document.querySelector('#id-canvas')
+            var context = canvas.getContext('2d')
+            g.canvas = canvas
+            g.context = context
+            //events
+            window.addEventListener('keydown', functio(event) {
+                g.keydowns[event.key] = true
+            })
+            window.addEventListener('keyup', functio(event) {
+                g.keydowns[event.key] = false
+            })
+
+            g.registerAction = function(key, callback) {
+                g.actions[key] = callback
+            }
+            //timer
+            setInterval(function() {
+                //events
+                var actions = Object.keys(g.actions)
+                for (var i = 0; i<action.length; i++) {
+                    var key actions[i]
+                    if(g.keydowns[key]) {
+                        g.actions[key]()
+                    }
+                }
+                //update
+                g.update()
+                //clear
+                context.clearRect(0, 0, canvas.width, canvas.height)
+                //draw
+                g.draw()
+            }, 1000/30)
+
+            return g
+        }
+
+        var _main =  function() {
+            
+            var game = GuaGame()
+            var paddle = Paddle()
+
+            var leftDown = false
+            var rightDown = false
+
+            //events
+            window.addEventListener('keydown', function(event) {
+                var k = event.key
+                if (k == 'a') {
+                    leftDown = true               
+                } else if (k == 'd') {
+                    rightDown = true
+                }
+            })
+
+            window.addEventListener('keyup', function(event) {
+                var k = event.key
+                if (k == 'a') {
+                    leftDown = false               
+                } else if (k == 'd') {
+                    rightDown = false
+                }
+            })
+
+            game.update = function() {
+                if (leftDown) {
+                    paddle.moveLeft()
+                } else if (rightDown) {
+                    paddle.moveRight()
+                }
+            }
+
+            game.draw = function() {
+                game.context.drawImage(paddle.image, paddle.x, paddle.y)                
+            }
+           
+        }
+
+        _main()
+
+        //54
     </script>
 </body>
 </html>
