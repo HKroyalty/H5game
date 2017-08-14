@@ -33,12 +33,11 @@
                 y: 200,
                 speed: 5,
             }
-            var paddle = o
             o.moveLeft = function() {
-                paddle.x -= paddle.speed
+                o.x -= o.speed
             }
             o.moveRight = function() {
-                paddle.x += paddle.speed
+                o.x += o.speed
             }
             return o
         }
@@ -53,13 +52,13 @@
             g.canvas = canvas
             g.context = context
             //events
-            window.addEventListener('keydown', functio(event) {
+            window.addEventListener('keydown', function(event) {
                 g.keydowns[event.key] = true
             })
-            window.addEventListener('keyup', functio(event) {
+            window.addEventListener('keyup', function(event) {
                 g.keydowns[event.key] = false
             })
-
+            
             g.registerAction = function(key, callback) {
                 g.actions[key] = callback
             }
@@ -67,9 +66,10 @@
             setInterval(function() {
                 //events
                 var actions = Object.keys(g.actions)
-                for (var i = 0; i<action.length; i++) {
-                    var key actions[i]
+                for (var i = 0; i<actions.length; i++) {
+                    var key = actions[i]
                     if(g.keydowns[key]) {
+                        //如果按键被按下，调用注册的action
                         g.actions[key]()
                     }
                 }
