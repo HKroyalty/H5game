@@ -33,11 +33,22 @@
                 y: 250,
                 speed: 10,
             }
+            o.move = function(x) {
+                if(x < 0) {
+                    o.x = 0
+                }
+            }
             o.moveLeft = function() {
                 o.x -= o.speed
+                if (o.x < 0) {
+                    o.x = 0
+                }
             }
             o.moveRight = function() {
                 o.x += o.speed
+                if (o.x > 400 - o.image.width) {
+                    o.x = 400 - o.image.width
+                }
             }
             o.collide = function(ball) {
                 if (ball.y + ball.image.height > o.y) {
@@ -216,7 +227,7 @@
 
         _main()
 
-        //26
+        //30
     </script>
 </body>
 </html>
