@@ -23,86 +23,13 @@
 
 <body>
     <canvas id="id-canvas" width="400" height="300"></canvas>
+    <hr>
+    <input id="id-input-speed" type="range" value="1">
+    <div class>
+        <textarea id="id-text-log" rows="20" cols="50"></textarea>
+    </div>
 
-
-    <script>
-        var loadLevel = function (n) {
-            n = n - 1
-            var blocks = []
-            var level = levels[n]
-            for (var i = 0; i < level.length; i++) {
-                var p = level[i]
-                var b = Block()
-                blocks.push(b)
-            }
-            return blocks
-        }
-        var _main = function () {
-
-            var game = GuaGame(30)
-            var paddle = Paddle()
-            var ball = Ball()
-
-            var blocks = loadLevel(1)
-
-            var paused = false
-            game.registerAction('a', function () {
-                paddle.moveLeft()
-            })
-            game.registerAction('d', function () {
-                paddle.m oveRight()
-            })
-            game.registerAction('f', function () {
-                ball.fire()
-            })
-            window.addEventListener('keydown', function (event) {
-                var k = event.key
-                if (k == 'p') {
-                    paused = !paused
-                } else if ('1234567'.includes(k)) {
-                    blocks = loadLevel(Number(k))
-                }
-            })
-
-            //画面更新
-            game.update = function () {
-                if (paused) {
-                    return
-                }
-                ball.move()
-                //判断相撞
-                if (paddle.collide(ball)) {
-                    ball.fantan()
-                }
-                //判断ball和blocks相撞
-                for (var i = 0; i < blocks.length; i++) {
-                    var block = blocks[i]
-                    if (block.collide(ball)) {
-                        log('block 相撞')
-                        block.disappear()
-                        ball.fantan()
-                    }
-                }
-            }
-
-            game.draw = function () {
-                game.drawImage(paddle)
-                game.drawImage(ball)
-                //draw blocks
-                for (var i = 0; i < blocks.length; i++) {
-                    var block = blocks[i]
-                    if (block.alive) {
-                        game.drawImage(block)
-                    }
-                }
-            }
-
-        }
-
-        _main()
-
-        //77
-    </script>
+    <script src="./main.js"></script>
 </body>
 
 </html>

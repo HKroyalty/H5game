@@ -9,7 +9,7 @@ var Block = function (position) {
         w: 80,
         h: 30,
         alive: true,
-        lifes: p[2] || 1
+        lifes: p[2] || 1,
     }
     o.disappear = function () {
         o.lifes--
